@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Vlog & Chronicle</title>
+    <title>ひとりと、だれかと、できること。</title>
     <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
     <style>
         /* 全体のベース（引き算のデザイン） */
@@ -47,7 +47,7 @@
         .post-list {
             display: flex;
             flex-direction: column;
-            gap: 48px; /* 記事ごとの贅沢な余白 */
+            gap: 64px; /* 写真が入るので余白を少し広めに */
         }
 
         .post-item {
@@ -61,16 +61,43 @@
             opacity: 0.6; /* マウスを乗せたときにふわっと薄くなる */
         }
 
-        .post-date {
+        /* メタ情報（日付とカテゴリタグ） */
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .post-date {
             color: #999999;
-            margin-bottom: 4px;
+        }
+
+        /* 落ち着いた雰囲気のカテゴリタグ */
+        .post-category {
+            background-color: #f0f0f0;
+            color: #666666;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
         }
 
         .post-title {
             font-size: 1.1rem;
             font-weight: 500;
-            margin: 0 0 8px 0;
+            margin: 0 0 12px 0;
+        }
+
+        /* 記事のアイキャッチ画像 */
+        .post-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover; /* 画像の比率を崩さずに綺麗にくり抜く */
+            border-radius: 6px;
+            margin-bottom: 16px;
+            background-color: #eee; /* 画像が読み込まれる前の薄いグレー */
         }
 
         .post-excerpt {
@@ -94,13 +121,39 @@
         
         <header>
             <h1>ひとりと、だれかと、できること。</h1>
+            <p>日々のこと、思考の断片、心地よい暮らしの記録。</p>
         </header>
 
         <main class="post-list">
             
-            <!-- 記事1 -->
+            <!-- 記事1（AI研究カテゴリ・画像ありの例） -->
             <a href="#" class="post-item">
-                <div class="post-date">2026.06.14</div>
+                <div class="post-meta">
+                    <div class="post-date">2026.06.15</div>
+                    <span class="post-category">AI研究</span>
+                </div>
+                <!-- サンプルの綺麗な画像を仮で入れています。自分の写真に変えられます！ -->
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80" alt="" class="post-image">
+                <h2 class="post-title">これからのAIと、人が紡ぐ言葉について</h2>
+                <p class="post-excerpt">技術がどれだけ進化しても、誰が、どんな想いでその言葉を置いたのかという『体温』のようなものは残り続ける気がする。最近考えていることの備忘録。</p>
+            </a>
+
+            <!-- 記事2（論文紹介カテゴリの例） -->
+            <a href="#" class="post-item">
+                <div class="post-meta">
+                    <div class="post-date">2026.06.15</div>
+                    <span class="post-category">論文紹介</span>
+                </div>
+                <h2 class="post-title">気になる文献を読んで：情報解析の視点</h2>
+                <p class="post-excerpt">今日目を通したデータの処理に関する論文が面白かった。一見複雑に見える規則性も、シンプルなコードに落とし込むことで見えてくるものがある。</p>
+            </a>
+
+            <!-- 記事3（日記カテゴリの例） -->
+            <a href="#" class="post-item">
+                <div class="post-meta">
+                    <div class="post-date">2026.06.14</div>
+                    <span class="post-category">日記</span>
+                </div>
                 <h2 class="post-title">ブログ開設日</h2>
                 <p class="post-excerpt">自分がきれいと思うものを自分で作ってみたくて、ブログという形でそれを表現することにしてみました。</p>
             </a>
