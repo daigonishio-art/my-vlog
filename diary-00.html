@@ -36,6 +36,15 @@
         /* 本文のエリア */
         .post-content { font-size: 0.95rem; color: #333333; }
         .post-content p { margin-bottom: 24px; }
+        /* 日記の中の写真をオシャレに、程よい大きさに変える設定 */
+        .diary-image {
+            display: block;
+            width: 100%;
+            max-width: 500px; /* ★ここ！横幅を最大500ピクセルに制限します */
+            height: auto;      /* 縦横比を崩さないように自動調整 */
+            border-radius: 6px; /* 角をほんのり丸くして優しく */
+            margin: 32px 0;    /* 写真の上下に贅沢な余白を作る */
+        }
     </style>
 </head>
 <body>
