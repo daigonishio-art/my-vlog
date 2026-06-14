@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vlog & Chronicle</title>
+    <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
+    <style>
+        /* 全体のベース（引き算のデザイン） */
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+            background-color: #fcfcfc; /* ほんのり温かみのある白 */
+            color: #333333; /* 強い黒を避けた優しい墨色 */
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 中央寄せのレイアウト枠 */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* ヘッダー：圧倒的な余白とシンプルさ */
+        header {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: #888888;
+            margin: 0;
+        }
+
+        /* メインコンテンツ（記事一覧の並び） */
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 48px; /* 記事ごとの贅沢な余白 */
+        }
+
+        .post-item {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .post-item:hover {
+            opacity: 0.6; /* マウスを乗せたときにふわっと薄くなる */
+        }
+
+        .post-date {
+            font-size: 0.8rem;
+            color: #999999;
+            margin-bottom: 4px;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+
+        .post-excerpt {
+            font-size: 0.9rem;
+            color: #666666;
+            margin: 0;
+        }
+
+        /* フッター */
+        footer {
+            margin-top: 120px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #b5b5b5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>My Vlog & Notebook</h1>
+            <p>日々のこと、思考の断片、心地よい暮らしの記録。</p>
+        </header>
+
+        <main class="post-list">
+            
+            <!-- 記事1 -->
+            <a href="#" class="post-item">
+                <div class="post-date">2026.06.14</div>
+                <h2 class="post-title">新しく自分の場所を作ってみることにした</h2>
+                <p class="post-excerpt">忙しない日々のなかで、ふと立ち止まる場所が欲しくなった。WordPressではなく、自分でコードを書いてサーバーに載せる。そんな小さな実験の記録。</p>
+            </a>
+
+            <!-- 記事2 -->
+            <a href="#" class="post-item">
+                <div class="post-date">2026.06.10</div>
+                <h2 class="post-title">引き算のデザインと、心地よい余白について</h2>
+                <p class="post-excerpt">お気に入りのWebサイトを眺めていて気づいた。素敵なサイトは、何があるかではなく、何が無いかで決まるのかもしれない。フォントと余白の話。</p>
+            </a>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 My Vlog. Built with minimal code.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
