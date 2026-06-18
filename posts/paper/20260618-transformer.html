@@ -19,6 +19,7 @@
             --meta-color: #999999;    /* 薄いグレー */
             --tag-bg: #f0f0f0;        /* タグの背景白 */
             --tag-text: #666666;
+            --bar-color: #333333;     /* 【①】プログレスバーの色（ライト時は黒） */
         }
 
         /* ダークモードがONになったときの色の定義 */
@@ -28,28 +29,48 @@
             --meta-color: #777777;
             --tag-bg: #2a2a2a;        /* タグの背景黒 */
             --tag-text: #b0b0b0;
+            --bar-color: #22c55e;     /* 【①】プログレスバーの色（ダーク時は鮮やかな緑） */
         }
 
-        /* 全体のベース（タイポグラフィの徹底こだわり） */
+        /* 全体のベース */
         body {
-            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "serif"; /* 美しい明朝体 */
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "serif";
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 2.0; /* 小説のようにゆったり読める行間 */
-            letter-spacing: 0.08em; /* 文字の空気感を広げる贅沢な文字間隔 */
+            line-height: 2.0;
+            letter-spacing: 0.08em;
             margin: 0;
             padding: 0;
-            transition: background-color 0.4s ease, color 0.4s ease; /* 色が変わるときに滑らかにジワッと変える */
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* 【①】最上部に固定する読了メーターの土台 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px; /* 邪魔しない絶妙な細さ */
+            background-color: transparent;
+            z-index: 1000;
+        }
+
+        /* 【①】実際に伸びるバー */
+        .progress-bar {
+            height: 100%;
+            width: 0%; /* 最初は0% */
+            background-color: var(--bar-color);
+            transition: width 0.1s ease-out;
         }
 
         .container {
-            max-width: 650px; /* 視線が散らばらないように少しだけ横幅をシャープに */
+            max-width: 650px;
             margin: 0 auto;
             padding: 80px 24px;
             position: relative;
         }
 
-        /* ヘッダーエリア（戻るボタンとダークモードボタン） */
+        /* ヘッダーエリア */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -71,7 +92,7 @@
             color: var(--text-color);
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.75rem; /* 文字だけになるので少し小さくシャープに */
+            font-size: 0.75rem;
             letter-spacing: 0.05em;
             cursor: pointer;
             font-family: inherit;
@@ -105,47 +126,121 @@
         /* 本文エリア */
         .post-content {
             font-size: 0.95rem;
+            margin-bottom: 80px; /* 【③】拍手ボタンとの間に少し広めの余白を作る */
         }
         .post-content p {
-            margin-bottom: 32px; /* 段落ごとの余白を贅沢に */
+            margin-bottom: 32px;
+        }
+
+        /* 【③】ミニマルな拍手エリアのデザイン */
+        .clap-area {
+            text-align: center;
+            border-top: 1px dashed var(--meta-color);
+            padding-top: 40px;
+            margin-top: 60px;
+        }
+
+        .clap-button {
+            background-color: var(--tag-bg);
+            border: none;
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s ease, background-color 0.3s;
+        }
+        /* ポチッと押したときに少しボタンが凹むアニメーション */
+        .clap-button:active {
+            transform: scale(0.95);
+        }
+
+        .clap-count {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--meta-color);
+            margin-top: 12px;
         }
     </style>
 </head>
 <body>
+
+    <!-- 【①】読了メーターのバーを画面最上部に配置 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
     <div class="container">
         
         <div class="page-header">
             <a href="../../index.html" class="back-to-top">← index</a>
-            <!-- 初期状態（白モード）の時は次のモードである「dark」を表示 -->
             <button class="theme-toggle" id="themeToggle">dark</button>
         </div>
 
         <article>
             <div class="post-meta">
-                <div class="post-date">2026.06.18</div>
-                <span class="post-category">論文紹介</span>
+                <div class="post-meta">
+                    <div class="post-date">2026.06.18</div>
+                    <span class="post-category">論文紹介</span>
+                </div>
             </div>
             <h1 class="post-title">Attention Is All You Need を読んで：すべての始まりの論文</h1>
             
             <div class="post-content">
+                <p>（ここに、テスト終わりのレポートを出し切った後の、リアルな思考や文章が吹き込まれます。今はデザインのテスト用プレースホルダーです。）</p>
+                
                 <p>2017年に発表されたこの論文は、現在の生成AIや大規模言語モデル（LLM）のすべての根幹となる「Transformer」を提唱した、まさに歴史の転換点とも言える一本。</p>
+                
+                <p>複雑な構造を削ぎ落とし、ただ『どこに注目（Attention）するか』というシンプルな概念だけで、世界をひっくり返してしまった美しさがここにある気がする。</p>
+
+                <!-- スクロールを体験しやすくするために、少しダミー文章を増やしています -->
+                <p>私たちは普段、言葉を繋ぐときに無意識に文脈を選び取っている。この論文が成し遂げたのは、その高度に思える処理を、数式という最も冷徹で美しい言語に落とし込んだことだ。</p>
+
+                <p>この器に、自分自身の言葉で何を書き込めるか。レポートを書き終えたあとの静かな夜に、もう一度この原典に向き合ってみたい。</p>
             </div>
         </article>
+
+        <!-- 【③】拍手ボタンのエリア -->
+        <div class="clap-area">
+            <button class="clap-button" id="clapButton">Clap</button>
+            <div class="clap-count"><span id="clapCount">0</span> claps</div>
+        </div>
+
     </div>
 
-    <!-- モードの切り替えと同時にボタンの文字も書き換えるスクリプト -->
+    <!-- 各ギミックを動かすプログラム（JavaScript） -->
     <script>
+        // --- モード切り替えプログラム ---
         const toggleButton = document.getElementById('themeToggle');
-        
         toggleButton.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
-                toggleButton.textContent = 'dark';  // 白に戻ったので、ボタンの文字を「dark」にする
+                toggleButton.textContent = 'dark';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                toggleButton.textContent = 'white'; // 黒になったので、ボタンの文字を「white」にする
+                toggleButton.textContent = 'white';
             }
+        });
+
+        // --- 【①】読了メーターのスクロール連動プログラム ---
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY; // 現在どれくらい下にスクロールしたか
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 全体のスクロール可能な長さ
+            const scrollPercent = (scrollTop / docHeight) * 100; // パーセント換算
+            document.getElementById('progressBar').style.width = scrollPercent + '%'; // バーの横幅を書き換える
+        });
+
+        // --- 【③】拍手ボタンのカウントプログラム ---
+        const clapButton = document.getElementById('clapButton');
+        const clapCountDisplay = document.getElementById('clapCount');
+        let count = 0; // 最初の拍手数は0
+
+        clapButton.addEventListener('click', () => {
+            count++; // ポチッと押されるたびに1ずつ足す
+            clapCountDisplay.textContent = count; // 画面の数字を書き換える
         });
     </script>
 </body>
