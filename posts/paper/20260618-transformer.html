@@ -6,7 +6,6 @@
     <title>Attention Is All You Need を読んで - ひとりと、だれかと、できること。</title>
     <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
     
-    <!-- 美しい日本語明朝体（Google Fonts）を読み込む -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -14,22 +13,24 @@
     <style>
         /* カラー変数の定義（ダークモード切り替え用） */
         :root {
-            --bg-color: #fcfcfc;      /* 優しい白 */
-            --text-color: #333333;    /* 墨色 */
-            --meta-color: #999999;    /* 薄いグレー */
-            --tag-bg: #f0f0f0;        /* タグの背景白 */
+            --bg-color: #fcfcfc;
+            --text-color: #333333;
+            --meta-color: #999999;
+            --tag-bg: #f0f0f0;
             --tag-text: #666666;
-            --bar-color: #333333;     /* 【①】プログレスバーの色（ライト時は黒） */
+            --bar-color: #333333;
+            --sparkle-color: #22c55e; /* パチパチ弾けるドットの色 */
         }
 
         /* ダークモードがONになったときの色の定義 */
         [data-theme="dark"] {
-            --bg-color: #121212;      /* 深い真夜中の黒 */
-            --text-color: #e0e0e0;    /* 目に優しい薄い白 */
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
             --meta-color: #777777;
-            --tag-bg: #2a2a2a;        /* タグの背景黒 */
+            --tag-bg: #2a2a2a;
             --tag-text: #b0b0b0;
-            --bar-color: #22c55e;     /* 【①】プログレスバーの色（ダーク時は鮮やかな緑） */
+            --bar-color: #22c55e;
+            --sparkle-color: #22c55e;
         }
 
         /* 全体のベース */
@@ -44,21 +45,19 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* 【①】最上部に固定する読了メーターの土台 */
+        /* 読了メーター */
         .progress-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px; /* 邪魔しない絶妙な細さ */
+            height: 3px;
             background-color: transparent;
             z-index: 1000;
         }
-
-        /* 【①】実際に伸びるバー */
         .progress-bar {
             height: 100%;
-            width: 0%; /* 最初は0% */
+            width: 0%;
             background-color: var(--bar-color);
             transition: width 0.1s ease-out;
         }
@@ -126,18 +125,25 @@
         /* 本文エリア */
         .post-content {
             font-size: 0.95rem;
-            margin-bottom: 80px; /* 【③】拍手ボタンとの間に少し広めの余白を作る */
+            margin-bottom: 80px;
         }
         .post-content p {
             margin-bottom: 32px;
         }
 
-        /* 【③】ミニマルな拍手エリアのデザイン */
+        /* 拍手エリアの土台（アニメーション用の位置基準にするために position: relative を追加） */
         .clap-area {
             text-align: center;
             border-top: 1px dashed var(--meta-color);
             padding-top: 40px;
             margin-top: 60px;
+            position: relative; 
+        }
+
+        /* 拍手ボタンの囲み枠（エフェクトの飛び出す中心点にする） */
+        .clap-btn-wrapper {
+            position: relative;
+            display: inline-block;
         }
 
         .clap-button {
@@ -150,11 +156,12 @@
             letter-spacing: 0.1em;
             cursor: pointer;
             font-family: inherit;
-            transition: transform 0.2s ease, background-color 0.3s;
+            transition: transform 0.1s ease;
+            position: relative;
+            z-index: 2; /* ボタンをエフェクトより手前に出す */
         }
-        /* ポチッと押したときに少しボタンが凹むアニメーション */
         .clap-button:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
         }
 
         .clap-count {
@@ -163,11 +170,38 @@
             color: var(--meta-color);
             margin-top: 12px;
         }
+
+        /* ★新機能：飛び出すパチパチドットの共通デザイン */
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: var(--sparkle-color);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none; /* マウスの邪魔をしない */
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            /* CSSアニメーションを適用：0.6秒かけて消えていく */
+            animation: flyOut 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        /* ★新機能：外側に広がりながらじわっと消える魔法（CSSアニメーション） */
+        @keyframes flyOut {
+            0% {
+                transform: translate(-50%, -50__) translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                /* 各ドットごとにJavaScriptで別々の方向に飛ばします */
+                transform: translate(-50%, -50__) translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 【①】読了メーターのバーを画面最上部に配置 -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -181,10 +215,8 @@
 
         <article>
             <div class="post-meta">
-                <div class="post-meta">
-                    <div class="post-date">2026.06.18</div>
-                    <span class="post-category">論文紹介</span>
-                </div>
+                <div class="post-date">2026.06.18</div>
+                <span class="post-category">論文紹介</span>
             </div>
             <h1 class="post-title">Attention Is All You Need を読んで：すべての始まりの論文</h1>
             
@@ -195,24 +227,23 @@
                 
                 <p>複雑な構造を削ぎ落とし、ただ『どこに注目（Attention）するか』というシンプルな概念だけで、世界をひっくり返してしまった美しさがここにある気がする。</p>
 
-                <!-- スクロールを体験しやすくするために、少しダミー文章を増やしています -->
                 <p>私たちは普段、言葉を繋ぐときに無意識に文脈を選び取っている。この論文が成し遂げたのは、その高度に思える処理を、数式という最も冷徹で美しい言語に落とし込んだことだ。</p>
 
                 <p>この器に、自分自身の言葉で何を書き込めるか。レポートを書き終えたあとの静かな夜に、もう一度この原典に向き合ってみたい。</p>
             </div>
         </article>
 
-        <!-- 【③】拍手ボタンのエリア -->
         <div class="clap-area">
-            <button class="clap-button" id="clapButton">Clap</button>
+            <div class="clap-btn-wrapper" id="clapWrapper">
+                <button class="clap-button" id="clapButton">Clap</button>
+            </div>
             <div class="clap-count"><span id="clapCount">0</span> claps</div>
         </div>
 
     </div>
 
-    <!-- 各ギミックを動かすプログラム（JavaScript） -->
     <script>
-        // --- モード切り替えプログラム ---
+        // モード切り替え
         const toggleButton = document.getElementById('themeToggle');
         toggleButton.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -225,22 +256,53 @@
             }
         });
 
-        // --- 【①】読了メーターのスクロール連動プログラム ---
+        // 読了メーター
         window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY; // 現在どれくらい下にスクロールしたか
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 全体のスクロール可能な長さ
-            const scrollPercent = (scrollTop / docHeight) * 100; // パーセント換算
-            document.getElementById('progressBar').style.width = scrollPercent + '%'; // バーの横幅を書き換える
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.getElementById('progressBar').style.width = scrollPercent + '%';
         });
 
-        // --- 【③】拍手ボタンのカウントプログラム ---
+        // --- ★新機能：拍手とパチパチアニメーションのプログラム ---
         const clapButton = document.getElementById('clapButton');
+        const clapWrapper = document.getElementById('clapWrapper');
         const clapCountDisplay = document.getElementById('clapCount');
-        let count = 0; // 最初の拍手数は0
+        let count = 0;
 
         clapButton.addEventListener('click', () => {
-            count++; // ポチッと押されるたびに1ずつ足す
-            clapCountDisplay.textContent = count; // 画面の数字を書き換える
+            // ① カウントを増やす
+            count++;
+            clapCountDisplay.textContent = count;
+
+            // ② ポチッと押した瞬間に、周囲に8個のドット（火花）を生成する
+            const sparkleCount = 8;
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+
+                // ドットをボタンの中央に配置
+                sparkle.style.top = '50%';
+                sparkle.style.left = '50%';
+
+                // 360度、綺麗な円形に飛び散るように計算する
+                const angle = (i / sparkleCount) * 2 * Math.PI;
+                const distance = 40 + Math.random() * 30; // 飛び散る距離（ランダムで散らす）
+                
+                // CSSに「この方向に飛んでね」という数値を渡す（変数）
+                const tx = Math.cos(angle) * distance + 'px';
+                const ty = Math.sin(angle) * distance + 'px';
+                sparkle.style.setProperty('--tx', tx);
+                sparkle.style.setProperty('--ty', ty);
+
+                // 画面（ボタンの周り）にドットを突っ込む
+                clapWrapper.appendChild(sparkle);
+
+                // 0.6秒後に用済みのドットを自動で消去する（メモリを重くしないため）
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 600);
+            }
         });
     </script>
 </body>
