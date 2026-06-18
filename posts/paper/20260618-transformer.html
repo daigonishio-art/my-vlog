@@ -6,6 +6,7 @@
     <title>Attention Is All You Need を読んで - ひとりと、だれかと、できること。</title>
     <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
     
+    <!-- 美しい日本語明朝体（Google Fonts）を読み込む -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -68,13 +69,15 @@
             background-color: var(--tag-bg);
             border: none;
             color: var(--text-color);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem; /* 文字だけになるので少し小さくシャープに */
+            letter-spacing: 0.05em;
             cursor: pointer;
             font-family: inherit;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
+        .theme-toggle:hover { opacity: 0.8; }
 
         /* 記事のメタ情報 */
         .post-meta {
@@ -113,7 +116,8 @@
         
         <div class="page-header">
             <a href="../../index.html" class="back-to-top">← index</a>
-            <button class="theme-toggle" id="themeToggle">🌓 Mode</button>
+            <!-- 初期状態（白モード）の時は次のモードである「dark」を表示 -->
+            <button class="theme-toggle" id="themeToggle">dark</button>
         </div>
 
         <article>
@@ -133,6 +137,7 @@
         </article>
     </div>
 
+    <!-- モードの切り替えと同時にボタンの文字も書き換えるスクリプト -->
     <script>
         const toggleButton = document.getElementById('themeToggle');
         
@@ -140,8 +145,10 @@
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
+                toggleButton.textContent = 'dark';  // 白に戻ったので、ボタンの文字を「dark」にする
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
+                toggleButton.textContent = 'white'; // 黒になったので、ボタンの文字を「white」にする
             }
         });
     </script>
