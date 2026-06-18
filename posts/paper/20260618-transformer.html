@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
-        /* カラー変数の定義（ダークモード切り替え用） */
         :root {
             --bg-color: #fcfcfc;
             --text-color: #333333;
@@ -19,10 +18,9 @@
             --tag-bg: #f0f0f0;
             --tag-text: #666666;
             --bar-color: #333333;
-            --sparkle-color: #22c55e; /* パチパチ弾けるドットの色 */
+            --sparkle-color: #22c55e;
         }
 
-        /* ダークモードがONになったときの色の定義 */
         [data-theme="dark"] {
             --bg-color: #121212;
             --text-color: #e0e0e0;
@@ -33,7 +31,6 @@
             --sparkle-color: #22c55e;
         }
 
-        /* 全体のベース */
         body {
             font-family: "Noto Serif JP", "Hiragino Mincho ProN", "serif";
             background-color: var(--bg-color);
@@ -45,7 +42,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* 読了メーター */
         .progress-container {
             position: fixed;
             top: 0;
@@ -69,7 +65,6 @@
             position: relative;
         }
 
-        /* ヘッダーエリア */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -84,7 +79,6 @@
         }
         .back-to-top:hover { opacity: 0.6; }
 
-        /* ダークモード切り替えスイッチ */
         .theme-toggle {
             background-color: var(--tag-bg);
             border: none;
@@ -99,7 +93,6 @@
         }
         .theme-toggle:hover { opacity: 0.8; }
 
-        /* 記事のメタ情報 */
         .post-meta {
             display: flex;
             align-items: center;
@@ -122,7 +115,6 @@
             margin: 0 0 40px 0;
         }
         
-        /* 本文エリア */
         .post-content {
             font-size: 0.95rem;
             margin-bottom: 80px;
@@ -131,7 +123,6 @@
             margin-bottom: 32px;
         }
 
-        /* 拍手エリアの土台（アニメーション用の位置基準にするために position: relative を追加） */
         .clap-area {
             text-align: center;
             border-top: 1px dashed var(--meta-color);
@@ -140,7 +131,6 @@
             position: relative; 
         }
 
-        /* 拍手ボタンの囲み枠（エフェクトの飛び出す中心点にする） */
         .clap-btn-wrapper {
             position: relative;
             display: inline-block;
@@ -158,7 +148,7 @@
             font-family: inherit;
             transition: transform 0.1s ease;
             position: relative;
-            z-index: 2; /* ボタンをエフェクトより手前に出す */
+            z-index: 2;
         }
         .clap-button:active {
             transform: scale(0.92);
@@ -171,7 +161,7 @@
             margin-top: 12px;
         }
 
-        /* ★新機能：飛び出すパチパチドットの共通デザイン */
+        /* 綺麗に修正したパチパチドットのCSS */
         .sparkle {
             position: absolute;
             width: 6px;
@@ -179,22 +169,20 @@
             background-color: var(--sparkle-color);
             border-radius: 50%;
             z-index: 1;
-            pointer-events: none; /* マウスの邪魔をしない */
-            opacity: 1;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
-            /* CSSアニメーションを適用：0.6秒かけて消えていく */
-            animation: flyOut 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            animation: flyOut 0.5s ease-out forwards;
         }
 
-        /* ★新機能：外側に広がりながらじわっと消える魔法（CSSアニメーション） */
         @keyframes flyOut {
             0% {
-                transform: translate(-50%, -50__) translate(0, 0) scale(1);
+                transform: translate(-50%, -50%) translate(0, 0) scale(1);
                 opacity: 1;
             }
             100% {
-                /* 各ドットごとにJavaScriptで別々の方向に飛ばします */
-                transform: translate(-50%, -50__) translate(var(--tx), var(--ty)) scale(0);
+                transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0);
                 opacity: 0;
             }
         }
@@ -264,44 +252,34 @@
             document.getElementById('progressBar').style.width = scrollPercent + '%';
         });
 
-        // --- ★新機能：拍手とパチパチアニメーションのプログラム ---
+        // 拍手とバグを直したパチパチプログラム
         const clapButton = document.getElementById('clapButton');
         const clapWrapper = document.getElementById('clapWrapper');
         const clapCountDisplay = document.getElementById('clapCount');
         let count = 0;
 
         clapButton.addEventListener('click', () => {
-            // ① カウントを増やす
             count++;
             clapCountDisplay.textContent = count;
 
-            // ② ポチッと押した瞬間に、周囲に8個のドット（火花）を生成する
             const sparkleCount = 8;
             for (let i = 0; i < sparkleCount; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
 
-                // ドットをボタンの中央に配置
-                sparkle.style.top = '50%';
-                sparkle.style.left = '50%';
-
-                // 360度、綺麗な円形に飛び散るように計算する
                 const angle = (i / sparkleCount) * 2 * Math.PI;
-                const distance = 40 + Math.random() * 30; // 飛び散る距離（ランダムで散らす）
+                const distance = 30 + Math.random() * 20; // 飛び散る距離を少しコンパクトに調整
                 
-                // CSSに「この方向に飛んでね」という数値を渡す（変数）
                 const tx = Math.cos(angle) * distance + 'px';
                 const ty = Math.sin(angle) * distance + 'px';
                 sparkle.style.setProperty('--tx', tx);
                 sparkle.style.setProperty('--ty', ty);
 
-                // 画面（ボタンの周り）にドットを突っ込む
                 clapWrapper.appendChild(sparkle);
 
-                // 0.6秒後に用済みのドットを自動で消去する（メモリを重くしないため）
                 setTimeout(() => {
                     sparkle.remove();
-                }, 600);
+                }, 500);
             }
         });
     </script>
