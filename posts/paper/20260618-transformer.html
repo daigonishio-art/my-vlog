@@ -1,8 +1,149 @@
-<a href="paper-01.html" class="post-item">
-                <div class="post-meta">
-                    <div class="post-date">2026.06.15</div>
-                    <span class="post-category">論文紹介</span>
-                </div>
-                <h2 class="post-title">気になる文献を読んで：情報解析の視点</h2>
-                <p class="post-excerpt">今日目を通したデータの処理に関する論文が面白かった。一見複雑に見える規則性も、シンプルなコードに落とし込むことで見えてくるものがある。</p>
-            </a>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Is All You Need を読んで - ひとりと、だれかと、できること。</title>
+    <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* カラー変数の定義（ダークモード切り替え用） */
+        :root {
+            --bg-color: #fcfcfc;      /* 優しい白 */
+            --text-color: #333333;    /* 墨色 */
+            --meta-color: #999999;    /* 薄いグレー */
+            --tag-bg: #f0f0f0;        /* タグの背景白 */
+            --tag-text: #666666;
+        }
+
+        /* ダークモードがONになったときの色の定義 */
+        [data-theme="dark"] {
+            --bg-color: #121212;      /* 深い真夜中の黒 */
+            --text-color: #e0e0e0;    /* 目に優しい薄い白 */
+            --meta-color: #777777;
+            --tag-bg: #2a2a2a;        /* タグの背景黒 */
+            --tag-text: #b0b0b0;
+        }
+
+        /* 全体のベース（タイポグラフィの徹底こだわり） */
+        body {
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "serif"; /* 美しい明朝体 */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 2.0; /* 小説のようにゆったり読める行間 */
+            letter-spacing: 0.08em; /* 文字の空気感を広げる贅沢な文字間隔 */
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.4s ease, color 0.4s ease; /* 色が変わるときに滑らかにジワッと変える */
+        }
+
+        .container {
+            max-width: 650px; /* 視線が散らばらないように少しだけ横幅をシャープに */
+            margin: 0 auto;
+            padding: 80px 24px;
+            position: relative;
+        }
+
+        /* ヘッダーエリア（戻るボタンとダークモードボタン） */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .back-to-top {
+            text-decoration: none;
+            color: var(--meta-color);
+            font-size: 0.9rem;
+        }
+        .back-to-top:hover { opacity: 0.6; }
+
+        /* ダークモード切り替えスイッチ */
+        .theme-toggle {
+            background-color: var(--tag-bg);
+            border: none;
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s;
+        }
+
+        /* 記事のメタ情報 */
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+        }
+        .post-date { color: var(--meta-color); }
+        .post-category {
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .post-title {
+            font-size: 1.6rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin: 0 0 40px 0;
+        }
+        
+        /* 本文エリア */
+        .post-content {
+            font-size: 0.95rem;
+        }
+        .post-content p {
+            margin-bottom: 32px; /* 段落ごとの余白を贅沢に */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="page-header">
+            <a href="../../index.html" class="back-to-top">← index</a>
+            <button class="theme-toggle" id="themeToggle">🌓 Mode</button>
+        </div>
+
+        <article>
+            <div class="post-meta">
+                <div class="post-date">2026.06.18</div>
+                <span class="post-category">論文紹介</span>
+            </div>
+            <h1 class="post-title">Attention Is All You Need を読んで：すべての始まりの論文</h1>
+            
+            <div class="post-content">
+                <p>（ここに、テスト終わりのレポートを出し切った後の、リアルな思考や文章が吹き込まれます。今はデザインのテスト用プレースホルダーです。）</p>
+                
+                <p>2017年に発表されたこの論文は、現在の生成AIや大規模言語モデル（LLM）のすべての根幹となる「Transformer」を提唱した、まさに歴史の転換点とも言える一本。</p>
+                
+                <p>複雑な構造を削ぎ落とし、ただ『どこに注目（Attention）するか』というシンプルな概念だけで、世界をひっくり返してしまった美しさがここにある気がする。</p>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        const toggleButton = document.getElementById('themeToggle');
+        
+        toggleButton.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
