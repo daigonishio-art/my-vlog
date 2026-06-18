@@ -136,53 +136,73 @@
             display: inline-block;
         }
 
+        /* ぷにっと弾むアニメーションを追加したボタン */
         .clap-button {
             background-color: var(--tag-bg);
             border: none;
             color: var(--text-color);
-            padding: 12px 24px;
+            padding: 12px 26px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
             letter-spacing: 0.1em;
             cursor: pointer;
             font-family: inherit;
-            transition: transform 0.1s ease;
             position: relative;
             z-index: 2;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        .clap-button:active {
-            transform: scale(0.92);
+        
+        /* クラスがついた瞬間にぷにっと揺れる魔法 */
+        .clap-button.pop-animation {
+            animation: buttonPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes buttonPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(0.85); } /* 押されて潰れる */
+            60% { transform: scale(1.1); }  /* 反動で少し膨らむ */
+            100% { transform: scale(1); }   /* 着地 */
         }
 
         .clap-count {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
             color: var(--meta-color);
-            margin-top: 12px;
+            margin-top: 14px;
+            transition: color 0.2s;
+        }
+        .clap-count.active {
+            color: var(--sparkle-color); /* カウントが増えた瞬間一瞬色を変える */
         }
 
-        /* 綺麗に修正したパチパチドットのCSS */
+        /* 重力とランダムサイズに対応した新しいスパークル */
         .sparkle {
             position: absolute;
-            width: 6px;
-            height: 6px;
             background-color: var(--sparkle-color);
             border-radius: 50%;
             z-index: 1;
             pointer-events: none;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            animation: flyOut 0.5s ease-out forwards;
+            opacity: 1;
+            /* 初速度と重力を再現するアニメーション */
+            animation: fireworks 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
-        @keyframes flyOut {
+        @keyframes fireworks {
             0% {
                 transform: translate(-50%, -50%) translate(0, 0) scale(1);
                 opacity: 1;
             }
+            40% {
+                opacity: 1;
+            }
             100% {
-                transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0);
+                /* X方向にはそのまま進み、Y方向（縦）には重力でグッと下に落ちる */
+                transform: translate(-50%, -50%) translate(var(--tx), calc(var(--ty) + 50px)) scale(0);
                 opacity: 0;
             }
         }
@@ -225,7 +245,7 @@
             <div class="clap-btn-wrapper" id="clapWrapper">
                 <button class="clap-button" id="clapButton">Clap</button>
             </div>
-            <div class="clap-count"><span id="clapCount">0</span> claps</div>
+            <div class="clap-count" id="clapCountText"><span id="clapCount">0</span> claps</div>
         </div>
 
     </div>
@@ -252,26 +272,46 @@
             document.getElementById('progressBar').style.width = scrollPercent + '%';
         });
 
-        // 拍手とバグを直したパチパチプログラム
+        // 押し心地を極限まで高めたプログラム
         const clapButton = document.getElementById('clapButton');
         const clapWrapper = document.getElementById('clapWrapper');
         const clapCountDisplay = document.getElementById('clapCount');
+        const clapCountText = document.getElementById('clapCountText');
         let count = 0;
 
         clapButton.addEventListener('click', () => {
             count++;
             clapCountDisplay.textContent = count;
 
-            const sparkleCount = 12;
+            // ① ボタン自体をぷにっと弾ませる
+            clapButton.classList.remove('pop-animation');
+            void clapButton.offsetWidth; // アニメーションを毎回リセットして発動させるためのオマジナイ
+            clapButton.classList.add('pop-animation');
+
+            // カウントテキストを一瞬光らせる
+            clapCountText.classList.add('active');
+            setTimeout(() => clapCountText.classList.remove('active'), 200);
+
+            // ② 物理法則（重力）を持ったランダム火花を16個噴射！
+            const sparkleCount = 16;
             for (let i = 0; i < sparkleCount; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
 
-                const angle = (i / sparkleCount) * 2 * Math.PI;
-                const distance = 50 + Math.random() * 25; // 飛び散る距離を少しコンパクトに調整
+                // 粒のサイズを「4px〜14px」の間でランダムにする（大中小を混ぜる）
+                const size = Math.floor(Math.random() * 10) + 4;
+                sparkle.style.width = size + 'px';
+                sparkle.style.height = size + 'px';
+
+                // 角度を計算（上方向に多く飛び散るように少し調整）
+                const angle = (i / sparkleCount) * 2 * Math.PI + (Math.random() * 0.4 - 0.2);
+                // 勢い（距離）もランダム
+                const distance = 60 + Math.random() * 40; 
                 
                 const tx = Math.cos(angle) * distance + 'px';
-                const ty = Math.sin(angle) * distance + 'px';
+                // 上方向に少しバイアスをかける（-30px）ことで、一瞬上に吹き上がってから落ちる動きにする
+                const ty = (Math.sin(angle) * distance) - 30 + 'px';
+                
                 sparkle.style.setProperty('--tx', tx);
                 sparkle.style.setProperty('--ty', ty);
 
@@ -279,7 +319,7 @@
 
                 setTimeout(() => {
                     sparkle.remove();
-                }, 600);
+                }, 700);
             }
         });
     </script>
