@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>論文紹介｜ひとりと、だれかと、できること。</title>
+
+  <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #333333;
+      --meta-color: #999999;
+      --tag-bg: #f0f0f0;
+      --tag-text: #666666;
+      --line-color: #e8e8e8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+      line-height: 2;
+      letter-spacing: 0.08em;
+    }
+
+    /* 上に固定されるヘッダー */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(252, 252, 252, 0.94);
+      border-bottom: 1px solid var(--line-color);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-brand {
+      display: block;
+      padding: 18px 0 10px;
+      color: var(--text-color);
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .site-subtitle {
+      display: block;
+      margin-top: 2px;
+      color: var(--meta-color);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+
+    .global-nav {
+      display: flex;
+      justify-content: center;
+      gap: clamp(18px, 3vw, 44px);
+      overflow-x: auto;
+      padding: 12px 0 15px;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+
+    .global-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .global-nav a {
+      color: var(--text-color);
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .global-nav a:hover {
+      opacity: 0.45;
+    }
+
+    .global-nav .current {
+      border-bottom: 1px solid var(--text-color);
+      padding-bottom: 3px;
+    }
+
+    /* 論文紹介ページ */
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 96px 24px 120px;
+    }
+
+    .page-header {
+      margin-bottom: 74px;
+    }
+
+    .page-label {
+      margin: 0 0 18px;
+      color: var(--meta-color);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+    }
+
+    .page-lead {
+      margin: 26px 0 0;
+      color: #666666;
+      font-size: 0.95rem;
+      line-height: 2.1;
+    }
+
+    .post-list {
+      border-top: 1px solid var(--line-color);
+    }
+
+    .post-item {
+      display: block;
+      padding: 34px 0 40px;
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-color);
+      transition: opacity 0.25s ease;
+    }
+
+    .post-item:hover {
+      opacity: 0.58;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.8rem;
+    }
+
+    .post-date {
+      color: var(--meta-color);
+    }
+
+    .post-category {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 0.75rem;
+    }
+
+    .post-title {
+      margin: 0 0 16px;
+      font-size: 1.35rem;
+      font-weight: 500;
+      line-height: 1.65;
+    }
+
+    .post-excerpt {
+      margin: 0;
+      color: #666666;
+      font-size: 0.92rem;
+      line-height: 2;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin-top: 70px;
+      color: var(--meta-color);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.82rem;
+      text-decoration: none;
+    }
+
+    .back-home:hover {
+      opacity: 0.55;
+    }
+
+    footer {
+      padding: 0 24px 34px;
+      color: #b5b5b5;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .site-brand {
+        padding-top: 15px;
+        font-size: 0.92rem;
+      }
+
+      .global-nav {
+        justify-content: flex-start;
+        gap: 24px;
+        padding-bottom: 13px;
+      }
+
+      .container {
+        padding-top: 76px;
+      }
+
+      .page-title {
+        font-size: 1.7rem;
+      }
+
+      .post-title {
+        font-size: 1.12rem;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+
+```
+  <a href="../../index.html" class="site-brand">
+    ひとりと、だれかと、できること。
+    <span class="site-subtitle">hitori, dareka, dekirukoto</span>
+  </a>
+
+  <nav class="global-nav" aria-label="サイト内メニュー">
+    <a href="index.html" class="current">論文紹介</a>
+    <a href="../money/index.html">お金のこと</a>
+    <a href="../ai/index.html">AIのこと</a>
+    <a href="../diary/index.html">日記など</a>
+    <a href="../../about/index.html">このブログを書いた人のこと</a>
+  </nav>
+
+</div>
+```
+
+  </header>
+
+  <main class="container">
+
+```
+<header class="page-header">
+  <p class="page-label">PAPER NOTES / 2026 —</p>
+  <h1 class="page-title">論文紹介</h1>
+  <p class="page-lead">
+    面白いと思った論文を読み、<br>
+    自分なりに考えたことを記録しています。
+  </p>
+</header>
+
+<section class="post-list">
+
+  <a href="20260618-transformer.html" class="post-item">
+    <div class="post-meta">
+      <span class="post-date">2026.06.18</span>
+      <span class="post-category">論文紹介</span>
+    </div>
+
+    <h2 class="post-title">
+      Attention Is All You Need を読んで：<br>
+      すべての始まりの論文
+    </h2>
+
+    <p class="post-excerpt">
+      現在の生成AIや大規模言語モデルの根幹となる
+      Transformerを提唱した論文について。
+    </p>
+  </a>
+
+</section>
+
+<a href="../../index.html" class="back-home">← index</a>
+```
+
+  </main>
+
+  <footer>
+    © 2026 ひとりと、だれかと、できること。
+  </footer>
+
+</body>
+</html>
