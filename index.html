@@ -1,170 +1,257 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>できること</title>
-    <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
-    <style>
-        /* 全体のベース（引き算のデザイン） */
-        body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
-            background-color: #fcfcfc; /* ほんのり温かみのある白 */
-            color: #333333; /* 強い黒を避けた優しい墨色 */
-            line-height: 1.8;
-            letter-spacing: 0.05em;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* 中央寄せのレイアウト枠 */
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 80px 24px;
-        }
+  <title>ひとりと、だれかと、できること。</title>
 
-        /* ヘッダー：圧倒的な余白とシンプルさ */
-        header {
-            margin-bottom: 80px;
-            text-align: center;
-        }
+  <link rel="icon" href="https://img.icons8.com/material-outlined/24/22c55e/leaf.png" type="image/png">
 
-        header h1 {
-            font-size: 1.5rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-        }
+  <!-- 日本語をきれいに読ませるための明朝体 -->
 
-        header p {
-            font-size: 0.85rem;
-            color: #888888;
-            margin: 0;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
 
-        /* メインコンテンツ（記事一覧の並び） */
-        .post-list {
-            display: flex;
-            flex-direction: column;
-            gap: 64px; /* 写真が入るので余白を少し広めに */
-        }
+  <style>
+    :root {
+      --paper: #fcfcfc;
+      --ink: #2f2f2f;
+      --muted: #8b8b8b;
+      --line: #e8e8e8;
+    }
 
-        .post-item {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            transition: opacity 0.3s ease;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .post-item:hover {
-            opacity: 0.6; /* マウスを乗せたときにふわっと薄くなる */
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        /* メタ情報（日付とカテゴリタグ） */
-        .post-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-        }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Noto Serif JP", serif;
+      line-height: 1.9;
+      letter-spacing: 0.06em;
+    }
 
-        .post-date {
-            color: #999999;
-        }
+    /* =========================
+       固定ヘッダー
+       ナビを増やすときは、下の <nav> に
+       <a href="...">新しいカテゴリ名</a>
+       を1行足すだけでOK
+    ========================== */
 
-        /* 落ち着いた雰囲気のカテゴリタグ */
-        .post-category {
-            background-color: #f0f0f0;
-            color: #666666;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            letter-spacing: 0.02em;
-        }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(252, 252, 252, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
 
-        .post-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin: 0 0 12px 0;
-        }
+    .header-inner {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+    }
 
-        /* 記事のアイキャッチ画像 */
-        .post-image {
-            width: 100%;
-            max-height: 350px;
-            object-fit: cover; /* 画像の比率を崩さずに綺麗にくり抜く */
-            border-radius: 6px;
-            margin-bottom: 16px;
-            background-color: #eee; /* 画像が読み込まれる前の薄いグレー */
-        }
+    .site-brand {
+      display: block;
+      padding: 18px 0 10px;
+      color: var(--ink);
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-decoration: none;
+    }
 
-        .post-excerpt {
-            font-size: 0.9rem;
-            color: #666666;
-            margin: 0;
-        }
+    .site-subtitle {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
 
-        /* フッター */
-        footer {
-            margin-top: 120px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #b5b5b5;
-        }
-    </style>
+    .global-nav {
+      display: flex;
+      justify-content: center;
+      gap: clamp(18px, 3vw, 44px);
+      overflow-x: auto;
+      padding: 12px 0 15px;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+
+    .global-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .global-nav a {
+      color: var(--ink);
+      font-size: 0.78rem;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .global-nav a:hover {
+      opacity: 0.45;
+    }
+
+    /* =========================
+       トップページ本文
+    ========================== */
+
+    .hero {
+      width: min(820px, calc(100% - 48px));
+      min-height: calc(100vh - 136px);
+      margin: 0 auto;
+      padding: clamp(110px, 18vh, 180px) 0 96px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-main {
+      max-width: 650px;
+    }
+
+    .hero-label {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-text {
+      max-width: 550px;
+      margin: 38px 0 0;
+      color: #5d5d5d;
+      font-size: 0.95rem;
+      line-height: 2.25;
+    }
+
+    .hero-guide {
+      margin: 80px 0 0;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    footer {
+      width: min(820px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 0 0 34px;
+      color: #b5b5b5;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .site-brand {
+        padding-top: 15px;
+        font-size: 0.92rem;
+      }
+
+      .global-nav {
+        justify-content: flex-start;
+        gap: 24px;
+        padding-bottom: 13px;
+      }
+
+      .hero {
+        width: min(100% - 40px, 820px);
+        min-height: calc(100vh - 124px);
+        padding-top: 90px;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+
 </head>
+
 <body>
 
-    <div class="container">
-        
-        <header>
-            <h1>できること</h1>
-            <p>what I can do</p>
-        </header>
+  <header class="site-header">
+    <div class="header-inner">
 
-        <main class="post-list">
-            
-            <!-- 記事1（AI研究カテゴリ・画像ありの例） -->
-            <a href="posts/ai/20260615-ai-and-words.html" class="post-item">
-                <div class="post-meta">
-                    <div class="post-date">2026.06.15</div>
-                    <span class="post-category">AIのこと</span>
-                </div>
-                <!-- サンプルの綺麗な画像を仮で入れています。自分の写真に変えられます！ -->
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80" alt="" class="post-image">
-                <h2 class="post-title">これからのAIと、人が紡ぐ言葉について</h2>
-                <p class="post-excerpt">技術がどれだけ進化しても、誰が、どんな想いでその言葉を置いたのかという『体温』のようなものは残り続ける気がする。最近考えていることの備忘録。</p>
-            </a>
+```
+  <a href="index.html" class="site-brand">
+    ひとりと、だれかと、できること。
+    <span class="site-subtitle">hitori, dareka, dekirukoto</span>
+  </a>
 
-            <!-- 記事2（論文紹介カテゴリの例） -->
-            <a href="posts/paper/20260618-transformer.html" class="post-item">
-                <div class="post-meta">
-                    <div class="post-date">2026.06.15</div>
-                    <span class="post-category">論文紹介</span>
-                </div>
-                <h2 class="post-title">Attention Is All You Need</h2>
-                <p class="post-excerpt">Google社の8人の天才</p>
-            </a>
+  <nav class="global-nav" aria-label="サイト内メニュー">
+    <a href="posts/paper/index.html">論文紹介</a>
+    <a href="posts/money/index.html">お金のこと</a>
+    <a href="posts/ai/index.html">AIのこと</a>
+    <a href="posts/diary/index.html">日記など</a>
+    <a href="about/index.html">このブログを書いた人のこと</a>
+  </nav>
 
-            <!-- 記事3（日記カテゴリの例） -->
-            <a href="posts/diary/20260614-blog-open.html" class="post-item">
-                <div class="post-meta">
-                    <div class="post-date">2026.06.14</div>
-                    <span class="post-category">日記</span>
-                </div>
-                <h2 class="post-title">ブログ開設日</h2>
-                <p class="post-excerpt">自分がきれいと思うものを自分で作ってみたくて、ブログという形でそれを表現することにしてみました。</p>
-            </a>
+</div>
+```
 
-        </main>
+  </header>
 
-        <footer>
-            <p>&copy; 2026 My Vlog. Built with minimal code.</p>
-        </footer>
+  <main class="hero">
+    <div class="hero-main">
+      <p class="hero-label">PERSONAL NOTES / 2026 —</p>
 
-    </div>
+```
+  <h1 class="hero-title">
+    ひとりと、<br>
+    だれかと、<br>
+    できること。
+  </h1>
+
+  <p class="hero-text">
+    論文を読み、技術について考え、<br>
+    日々の小さなことを書き残す場所です。<br>
+    まだ、少しずつ育てています。
+  </p>
+</div>
+
+<p class="hero-guide">
+  上のメニューから、それぞれの文章へ。
+</p>
+```
+
+  </main>
+
+  <footer>
+    © 2026 ひとりと、だれかと、できること。
+  </footer>
 
 </body>
 </html>
